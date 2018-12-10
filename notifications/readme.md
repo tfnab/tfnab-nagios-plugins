@@ -20,6 +20,12 @@ define command{
 }
 ```
 
+you need to have the following set in your `nagios.cfg`:
+
+```
+enable_environment_macros=1
+```
+
 ## Requirements
 
 bash scripts
