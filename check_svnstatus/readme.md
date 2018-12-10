@@ -4,13 +4,13 @@ checks a subversion working copy for modifications
 
 ## Usage
 
-check_svnstatus.sh -d WCDIR [ -v ]
+`check_svnstatus.sh -d WCDIR [ -v ]`
 
 ## Requirements
 
 bash script
 
-requires svn and egrep in one of the directories listed in PATH
+requires `svn` and `egrep` in one of the directories listed in PATH
 
 ## Returns
 
