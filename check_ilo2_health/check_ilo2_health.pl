@@ -4,7 +4,7 @@
 # check_ilo2_health.pl
 # based on check_stuff.pl and locfg.pl
 #
-# Nagios plugin using the Nagios::Plugin module and the
+# Nagios plugin using the Monitoring::Plugin module and the
 # HP Lights-Out XML PERL Scripting Sample from
 # ftp://ftp.hp.com/pub/softlib2/software1/pubsw-linux/p391992567/v60711/linux-LOsamplescripts3.00.0-2.tgz
 # checks if all sensors are ok, returns warning on high temperatures and
@@ -167,7 +167,7 @@ use strict;
 use warnings;
 use strict 'refs';
 
-use Nagios::Plugin;
+use Monitoring::Plugin;
 use Sys::Hostname;
 use IO::Socket::SSL;
 use XML::Simple;
@@ -179,8 +179,8 @@ $VERSION = 1.63;
 
 $PROGNAME = "check_ilo2_health";
 
-# instantiate Nagios::Plugin
-our $p = Nagios::Plugin->new(
+# instantiate Monitoring::Plugin
+our $p = Monitoring::Plugin->new(
         usage => "Usage: %s [-H <host>] [ -u|--user=<USERNAME> ]
   [ -p|--password=<PASSWORD> ] [ -f|--inputfile=<filename> ]
   [ -a|--fanredundancy ] [ -c|--checkdrives ] [ -d|--perfdata ]
