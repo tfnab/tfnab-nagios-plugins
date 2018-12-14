@@ -37,10 +37,6 @@ my $storageType = shift;
 our $WARN = shift;
 our $CRIT = shift;	
 
-unless( $CRIT ) {
-	errorExit( "syntax: check_win_snmp_storage.pl HOST COMMUNITY type WARN CRIT" );
-}
-
 our %ERRORS = (
 	OK => 0,
 	WARNING => 1,
@@ -48,6 +44,10 @@ our %ERRORS = (
 	UNKNOWN => 3,
 	DEPENDENT => 4
 );
+
+unless( $CRIT ) {
+	errorExit( "syntax: check_win_snmp_storage.pl HOST COMMUNITY type WARN CRIT" );
+}
 
 my %oid = (
 	hrStorageEntryTables => '.1.3.6.1.2.1.25.2.3.1',
