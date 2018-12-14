@@ -168,13 +168,32 @@ if( $storageType =~ /^[a-zA-Z]$/ ) {
 					$this{pct}, 
 					$this{size} * $this{units}, 
 					$this{used} * $this{units}, 
-					"Disk $drive"
+					"$drive:"
 				);
 			}
 		}
 	}
 	errorExit( "Driveletter [$drive] not found" );
 }
+
+# UNIX mount points
+if( $storageType =~ /^\// ) {
+	foreach my $item ( values %storage ){
+		my %this = %{$item};
+		if ( ($this{type} eq 'FixedDisk') ) {
+			if( $storageType eq $this{desc} ){
+				ReportAndExit( 
+					$this{pct}, 
+					$this{size} * $this{units}, 
+					$this{used} * $this{units}, 
+					"$storageType"
+				);
+			}
+		}
+	}
+	errorExit( "Partition [$storageType] not found" );
+}
+
 errorExit( "Invalid storage type $storageType" );
 
 # end of program
@@ -191,4 +210,3 @@ sub errorExit {
 	print "UNKNOWN: $msg\n";
 	exit $ERRORS{UNKNOWN};
 }
-
