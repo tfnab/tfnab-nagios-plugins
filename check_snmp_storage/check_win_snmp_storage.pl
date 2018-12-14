@@ -200,7 +200,7 @@ errorExit( "Invalid storage type $storageType" );
 
 sub ReportAndExit {
 	my ( $pct, $total, $used, $type ) = @_;
-	my $err = ($pct > $CRIT) ? 'CRITICAL' : ($pct > $WARN) ? 'WARNING' : 'OK';
+	my $err = ($pct >= $CRIT) ? 'CRITICAL' : ($pct >= $WARN) ? 'WARNING' : 'OK';
 	print "$err : Storage Used $pct% : Total $total bytes : Used $used bytes : Type $type\n";
 	exit $ERRORS{$err};
 }
