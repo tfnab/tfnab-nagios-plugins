@@ -95,6 +95,9 @@ foreach my $key ( keys %value ){
 my %storage;
 foreach my $index ( @indices ){
 	my $size = $value{ $oid{hrStorageSize} . ".$index" };
+	if ( $size < 0 ) {
+		$size = 2147483647 + ( $size + 2147483648 );
+	}
 	my $used = $value{ $oid{hrStorageUsed} . ".$index" };
 	my $pct = $size ? int(100 * $used / $size) : 0;
 	$storage{$index} = {
@@ -163,7 +166,9 @@ if( $storageType =~ /^[a-zA-Z]$/ ) {
 		my %this = %{$item};
 		if ( ($this{type} eq 'FixedDisk') ) {
 			my $thisDrive = uc substr($this{desc},0,1);
-			if( $thisDrive eq $drive ){
+			my $driveHEX = "0X" . unpack "H*", $drive;
+			my $thisDriveHEX = uc substr($this{desc},0,4);
+			if( $thisDrive eq $drive || $thisDriveHEX eq $driveHEX ){
 				ReportAndExit( 
 					$this{pct}, 
 					$this{size} * $this{units}, 
