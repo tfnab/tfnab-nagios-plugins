@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Plugin Name: notify-host-by-email.sh
-# Version: 0.2
+# Version: 0.5
 # Author: Martin Lormes
 # Author URI: http://ten-fingers-and-a-brain.com
 
-# Copyright (c) 2011-2018 Martin Lormes
+# Copyright (c) 2011-2024 Martin Lormes
 #
 # This program is free software; you can redistribute it and/or modify it under 
 # the terms of the GNU General Public License as published by the Free Software 
@@ -28,15 +28,18 @@ else
 	PROBLEMID=$NAGIOS_HOSTPROBLEMID
 fi
 
+T_TOPIC="** $NAGIOS_HOSTNAME ** [$PROBLEMID]"
+
 /usr/sbin/sendmail -f $FROMADDRESS $NAGIOS_CONTACTEMAIL <<END-OF-NOTIFICATION
 Content-Type: text/plain
 From: $FROMADDRESS
 To: $NAGIOS_CONTACTEMAIL
-Subject: ** [$PROBLEMID] $NAGIOS_NOTIFICATIONTYPE: $NAGIOS_HOSTNAME is $NAGIOS_HOSTSTATE **
+Subject: $NAGIOS_NOTIFICATIONTYPE: $T_TOPIC
+Thread-Topic: $T_TOPIC
 Date: `date -R`
 References: <nagios-problem-id-$PROBLEMID-@`hostname --fqdn`>
 
-$NAGIOS_HOSTOUTPUT
+$NAGIOS_NOTIFICATIONTYPE: $NAGIOS_HOSTSTATE -- $NAGIOS_HOSTOUTPUT
 $NAGIOS_LONGHOSTOUTPUT
 
 * * * * * Nagios * * * * *
@@ -50,8 +53,9 @@ Duration:          $NAGIOS_HOSTDURATION
 Host:              $NAGIOS_HOSTNAME
 Host Alias:        $NAGIOS_HOSTALIAS
 Address:           $NAGIOS_HOSTADDRESS
+Notes:             $NAGIOS_HOSTNOTESURL
 
 Date/Time:         $NAGIOS_LONGDATETIME
 
-// this notification was created using notify-host-by-email.sh _r2
+// this notification was created using notify-host-by-email.sh _r5
 END-OF-NOTIFICATION
