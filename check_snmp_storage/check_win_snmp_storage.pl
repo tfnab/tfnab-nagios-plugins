@@ -200,8 +200,26 @@ errorExit( "Invalid storage type $storageType" );
 
 sub ReportAndExit {
 	my ( $pct, $total, $used, $type ) = @_;
+	my $free = $total - $used;
+	my                                         $freeH = sprintf ( "%.1f KB", $free / 1024 );
+	if ( 1024 * 1024 < $free )               { $freeH = sprintf ( "%.1f MB", $free / 1024 / 1024 ); }
+	if ( 1024 * 1024 * 1024 < $free )        { $freeH = sprintf ( "%.1f GB", $free / 1024 / 1024 / 1024 ); }
+	if ( 1024 * 1024 * 1024 * 1024 < $free ) { $freeH = sprintf ( "%.1f TB", $free / 1024 / 1024 / 1024 / 1024 ); }
+#	my $freeMB = int ( $free / 1024 / 1024 );
+	my $usedMB = int ( $used / 1024 / 1024 );
+	my $freePct = 100 - $pct;
+	my $totalMB = int ( $total / 1024 / 1024 );
+	my $warnMB = int ( $total * $WARN / 100 / 1024 / 1024 );
+	my $critMB = int ( $total * $CRIT / 100 / 1024 / 1024 );
 	my $err = ($pct >= $CRIT) ? 'CRITICAL' : ($pct >= $WARN) ? 'WARNING' : 'OK';
-	print "$err : Storage Used $pct% : Total $total bytes : Used $used bytes : Type $type\n";
+#	print "$err : Storage Used $pct% : Total $total bytes : Used $used bytes : Type $type\n";
+	if( $type =~ /Memory$/ ) {
+		print "MEMORY ";
+	} else {
+		print "DISK ";
+	}
+	print "$err - free space: $type $freeH ($freePct%);| ";
+	print "/=".$usedMB."MB;$warnMB;$critMB;0;$totalMB\n";
 	exit $ERRORS{$err};
 }
 
